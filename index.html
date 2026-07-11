@@ -38,7 +38,7 @@
   #q{width:100%;border:0;border-radius:14px;padding:13px 40px;font-size:16px;background:rgba(255,255,255,.96);color:#0f2233}
   #clear{position:absolute;right:8px;top:50%;transform:translateY(-50%);border:0;background:#0000000f;color:#0f2233;border-radius:50%;width:26px;height:26px;font-size:15px;display:none}
   .seg{display:flex;gap:6px;margin-top:12px;background:rgba(255,255,255,.16);padding:4px;border-radius:12px}
-  .seg button{flex:1;border:0;background:transparent;color:#fff;padding:8px 4px;border-radius:9px;font-size:13.5px;font-weight:600}
+  .seg button{flex:1;border:0;background:transparent;color:#fff;padding:8px 2px;border-radius:9px;font-size:12.5px;font-weight:600}
   .seg button.on{background:#fff;color:var(--brand)}
   main{max-width:680px;margin:0 auto;padding:12px 14px 40px}
   .chips{display:flex;gap:8px;overflow-x:auto;padding:12px 0 6px;scrollbar-width:none}
@@ -89,6 +89,25 @@
   .crew-main b{font-size:15.5px}
   .crew-main span{font-size:13px;color:var(--muted)}
   .crew-del{border:0;background:transparent;color:var(--muted);font-size:16px;padding:6px 8px;flex-shrink:0}
+  /* Route */
+  .route-head{background:linear-gradient(160deg,var(--brand),var(--brand2));color:#fff;border-radius:16px;
+    padding:14px 16px;margin:14px 0;box-shadow:var(--shadow)}
+  .route-head b{display:block;font-size:15px;line-height:1.35}
+  .route-head span{font-size:12.5px;opacity:.85}
+  .route-day{display:flex;gap:12px;margin-bottom:8px}
+  .rd-when{flex-shrink:0;width:56px;text-align:center;padding-top:4px}
+  .rd-when .dow{display:block;font-size:11px;color:var(--muted);margin-bottom:2px}
+  .rd-when .dat{display:block;background:var(--brand);color:#fff;border-radius:10px;font-weight:700;font-size:13px;padding:6px 2px}
+  .rd-card{flex:1;min-width:0;background:var(--card);border:1px solid var(--line);border-radius:14px;
+    box-shadow:var(--shadow);padding:12px 14px;position:relative}
+  .rd-card.sea{background:transparent;box-shadow:none;border-style:dashed}
+  .rd-card.today{border:2px solid var(--accent)}
+  .rd-today{position:absolute;top:-9px;right:12px;background:var(--accent);color:#fff;font-size:10.5px;
+    font-weight:800;letter-spacing:.5px;padding:2px 9px;border-radius:999px}
+  .rd-card h3{margin:0;font-size:16px}
+  .rd-times{display:flex;gap:6px;flex-wrap:wrap;margin-top:7px}
+  .rd-note{color:var(--muted);font-size:13px;margin-top:7px;line-height:1.45}
+  .badge.bord{background:#e5535322;color:#c0392b}
   .res-head{background:linear-gradient(160deg,var(--brand),var(--brand2));color:#fff;border-radius:16px;padding:16px;text-align:center;box-shadow:var(--shadow);margin-top:14px}
   .res-head .big{font-size:14px;opacity:.9}
   .res-head .deckbig{font-size:28px;font-weight:800;margin:4px 0}
@@ -156,6 +175,7 @@ window.onerror=function(m,src,line,col,err){
   <div class="seg">
     <button data-view="kat" class="on">Lokale</button>
     <button data-view="deck">Decks</button>
+    <button data-view="route">Route</button>
     <button data-view="kabine">Kabine</button>
     <button data-view="info">Info</button>
   </div>
@@ -164,7 +184,7 @@ window.onerror=function(m,src,line,col,err){
 <main>
   <div id="chips" class="chips"></div>
   <div id="content"></div>
-  <footer>Inoffizieller Bordguide · Deckpläne aus der offiziellen TUI-Cruises-Broschüre<br>Angaben ohne Gewähr · Öffnungszeiten über die „Mein Schiff&ldquo;-App<br><b>Build 14</b></footer>
+  <footer>Inoffizieller Bordguide · Deckpläne aus der offiziellen TUI-Cruises-Broschüre<br>Angaben ohne Gewähr · Öffnungszeiten über die „Mein Schiff&ldquo;-App<br><b>Build 15</b></footer>
 </main>
 
 <div class="lb" id="lb">
@@ -217,6 +237,25 @@ const DECKS = [
   {n:4, name:"Atlantik",role:"Hauptrestaurant · Theater · Shops"},
   {n:3, name:"Welle",   role:"Lobby · Rezeption · Hospital"},
   {n:2, name:"Anker",   role:"Landungsbrücken · Tender"},
+];
+
+/* ==== ROUTE Norwegen 14.–21.10.2026 (Zeiten laut „Meine Reise"-Portal / Reiseplan) ==== */
+const ROUTE_TITEL="Kiel → Bergen → Stavanger → Kristiansand → Oslo → Hamburg";
+const ROUTE=[
+ {d:"2026-10-14",w:"Mi",t:"14.10.",hafen:"Kiel – Einschiffung",icon:"🛳️",an:"Anlegen 06:30",bord:"Alle an Bord 18:30",
+  note:"Früh-Check-in ab 09:00 (mit SPA-Buchung gratis) · Kabinen ab ca. 15:00 · abends Auslaufen"},
+ {d:"2026-10-15",w:"Do",t:"15.10.",hafen:"Seetag",icon:"🌊",sea:true,note:"Schiff entdecken – Spa, Pools, Harbour Market"},
+ {d:"2026-10-16",w:"Fr",t:"16.10.",hafen:"Bergen",icon:"🇳🇴",an:"Ankunft 08:00",bord:"Alle an Bord 16:30",
+  note:"⚠️ Kürzester Stopp! Bryggen & Fløibahn nur 5–10 Min. vom Anleger · wetterfest anziehen"},
+ {d:"2026-10-17",w:"Sa",t:"17.10.",hafen:"Stavanger",icon:"🇳🇴",an:"Ankunft 08:00",bord:"Alle an Bord 18:30",
+  note:"Lysefjord & Preikestolen (Bootstour) · Altstadt Gamle Stavanger zu Fuß"},
+ {d:"2026-10-18",w:"So",t:"18.10.",hafen:"Kristiansand",icon:"🇳🇴",an:"Ankunft 08:00",bord:"Alle an Bord 17:30",
+  note:"Altstadt Posebyen & Schären-Archipel · Zentrum zu Fuß erreichbar"},
+ {d:"2026-10-19",w:"Mo",t:"19.10.",hafen:"Oslo",icon:"🇳🇴",an:"Ankunft 08:00",bord:"Alle an Bord 22:30",
+  note:"Längster Stopp – auch abends von Bord! Vigelandpark, Oper, Bygdøy-Museen"},
+ {d:"2026-10-20",w:"Di",t:"20.10.",hafen:"Seetag",icon:"🌊",sea:true,note:"Letzten Bordtag genießen · abends Koffer packen"},
+ {d:"2026-10-21",w:"Mi",t:"21.10.",hafen:"Hamburg – Ausschiffung",icon:"🏁",an:"Anlegen 05:00",bord:"bis 11:00 von Bord",
+  note:"Kabinen bis 09:00 räumen · Frühstück 09:00–10:30 · Transfer Steinwerder→Flughafen ~40 Min"},
 ];
 
 /* Kabinennummern-Bereiche je Deck (ungefähr, für Höhen-Markierung) */
@@ -454,6 +493,27 @@ function renderKabine(){
   <div id="cabresult">${cabResultHTML("")}</div>
   <div id="crewlist">${crewListHTML()}</div>`;
 }
+function renderRoute(){
+  const n=new Date();
+  const today=n.getFullYear()+"-"+String(n.getMonth()+1).padStart(2,"0")+"-"+String(n.getDate()).padStart(2,"0");
+  let h=`<div class="route-head"><b>🧭 ${ROUTE_TITEL}</b><span>14.–21. Oktober 2026 · 7 Nächte · Zeiten laut Reiseplan</span></div>`;
+  h+=ROUTE.map(r=>{
+    const isToday=r.d===today;
+    let badges="";
+    if(r.an)   badges+=`<span class="badge nr">${r.an}</span>`;
+    if(r.bord) badges+=`<span class="badge bord">⏰ ${r.bord}</span>`;
+    return `<div class="route-day">
+      <div class="rd-when"><span class="dow">${r.w}</span><span class="dat">${r.t}</span></div>
+      <div class="rd-card ${r.sea?'sea':''} ${isToday?'today':''}">
+        ${isToday?'<span class="rd-today">HEUTE</span>':''}
+        <h3>${r.icon} ${r.hafen}</h3>
+        ${badges?`<div class="rd-times">${badges}</div>`:''}
+        ${r.note?`<div class="rd-note">${r.note}</div>`:''}
+      </div></div>`;
+  }).join("");
+  h+=`<div class="note">⏰ <strong>„Alle an Bord"</strong> = spätestens zurück am Schiff (meist 30 Min. vor Ablegen). Uhren an die <strong>Bordzeit</strong> halten – Zeiten am Tagesprogramm/Aushang gegenprüfen.</div>`;
+  return h;
+}
 function renderInfo(){
   return `<div class="info">
     <div class="note">📘 Die Deckpläne stammen aus der <strong>offiziellen TUI-Cruises-Broschüre</strong> der Mein Schiff Relax. Deine Kabinennummer steht direkt im Plan – die App markiert zusätzlich die richtige <strong>Seite</strong> (Backbord/Steuerbord) und die ungefähre Höhe (Bug↔Heck).</div>
@@ -476,6 +536,7 @@ function render(){
   const el=document.getElementById("content");
   if(state.view==="kat") el.innerHTML=renderKat();
   else if(state.view==="deck") el.innerHTML=renderDeck();
+  else if(state.view==="route") el.innerHTML=renderRoute();
   else if(state.view==="kabine"){el.innerHTML=renderKabine();bindCabin();}
   else el.innerHTML=renderInfo();
 }
