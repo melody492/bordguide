@@ -12,14 +12,16 @@
 <link rel="apple-touch-icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxODAiIGhlaWdodD0iMTgwIj48cmVjdCB3aWR0aD0iMTgwIiBoZWlnaHQ9IjE4MCIgcng9IjQwIiBmaWxsPSIjMGEzZDYyIi8+PHRleHQgeD0iOTAiIHk9IjExOCIgZm9udC1zaXplPSIxMDAiIHRleHQtYW5jaG9yPSJtaWRkbGUiPvCfm6Q8L3RleHQ+PC9zdmc+">
 <style>
   :root{
-    --bg:#f2f6fa; --card:#ffffff; --ink:#0f2233; --muted:#5b7085;
-    --line:#dde7f0; --brand:#0a3d62; --brand2:#1e6fa8; --accent:#0fb9b1;
-    --shadow:0 2px 10px rgba(10,61,98,.08);
+    --bg:#eef3f8; --card:#ffffff; --ink:#0b2033; --muted:#5a7184;
+    --line:#e2eaf2; --brand:#0b3554; --brand2:#136a8a; --accent:#0fb9b1;
+    --shadow:0 1px 2px rgba(9,30,50,.05), 0 10px 30px rgba(9,30,50,.08);
+    --glass:rgba(10,42,66,.88);
   }
   @media (prefers-color-scheme:dark){
-    :root{ --bg:#0b1622; --card:#132535; --ink:#eaf2fb; --muted:#9db4c9;
-      --line:#22384c; --brand:#0fb9b1; --brand2:#4bb7e8; --accent:#0fb9b1;
-      --shadow:0 2px 12px rgba(0,0,0,.35);}
+    :root{ --bg:#0a141e; --card:#13212e; --ink:#ecf3fa; --muted:#94abc0;
+      --line:#20344a; --brand:#0fb9b1; --brand2:#3fb1d8; --accent:#0fb9b1;
+      --shadow:0 1px 2px rgba(0,0,0,.3), 0 10px 30px rgba(0,0,0,.35);
+      --glass:rgba(8,22,34,.9);}
   }
   *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
   html,body{margin:0}
@@ -27,28 +29,38 @@
     background:var(--bg); color:var(--ink); line-height:1.4; -webkit-font-smoothing:antialiased;
     padding-bottom:env(safe-area-inset-bottom);}
   header{position:sticky; top:0; z-index:20;
-    background:linear-gradient(160deg,var(--brand),var(--brand2)); color:#fff;
-    padding:calc(env(safe-area-inset-top) + 14px) 16px 12px; box-shadow:0 4px 16px rgba(10,61,98,.25);}
-  .brand{display:flex;align-items:center;gap:10px;margin-bottom:12px}
-  .brand .logo{font-size:26px}
-  .brand h1{font-size:18px;margin:0;font-weight:700}
-  .brand small{display:block;font-weight:400;opacity:.85;font-size:12px}
+    background:linear-gradient(160deg,rgba(11,53,84,.94),rgba(19,106,138,.88));
+    -webkit-backdrop-filter:blur(18px) saturate(160%); backdrop-filter:blur(18px) saturate(160%);
+    color:#fff; padding:calc(env(safe-area-inset-top) + 12px) 16px 12px;
+    border-bottom:1px solid rgba(255,255,255,.09);}
+  .brand{display:flex;align-items:center;gap:10px;margin-bottom:11px}
+  .brand .logo{font-size:28px;filter:drop-shadow(0 2px 4px rgba(0,0,0,.25))}
+  .brand h1{font-size:20px;margin:0;font-weight:800;letter-spacing:-.3px}
+  .brand small{display:block;font-weight:500;opacity:.8;font-size:12px;letter-spacing:.2px}
   .searchwrap{position:relative}
   .searchwrap svg{position:absolute;left:12px;top:50%;transform:translateY(-50%);opacity:.6}
   #q{width:100%;border:0;border-radius:14px;padding:13px 40px;font-size:16px;background:rgba(255,255,255,.96);color:#0f2233}
   #clear{position:absolute;right:8px;top:50%;transform:translateY(-50%);border:0;background:#0000000f;color:#0f2233;border-radius:50%;width:26px;height:26px;font-size:15px;display:none}
-  .seg{display:flex;gap:6px;margin-top:12px;background:rgba(255,255,255,.16);padding:4px;border-radius:12px}
-  .seg button{flex:1;border:0;background:transparent;color:#fff;padding:8px 2px;border-radius:9px;font-size:12.5px;font-weight:600}
-  .seg button.on{background:#fff;color:var(--brand)}
-  main{max-width:680px;margin:0 auto;padding:12px 14px 40px}
+  /* Tab-Leiste unten (wie native iPhone-Apps) */
+  .tabbar{position:fixed;left:0;right:0;bottom:0;z-index:30;display:flex;justify-content:space-around;
+    padding:7px 8px calc(env(safe-area-inset-bottom) + 7px);
+    background:var(--glass);
+    -webkit-backdrop-filter:blur(22px) saturate(160%);backdrop-filter:blur(22px) saturate(160%);
+    border-top:1px solid rgba(255,255,255,.1)}
+  .tabbar button{flex:1;max-width:92px;border:0;background:transparent;color:rgba(255,255,255,.55);
+    display:flex;flex-direction:column;align-items:center;gap:3px;
+    font-size:10.5px;font-weight:600;letter-spacing:.2px;padding:4px 0;border-radius:12px}
+  .tabbar button svg{width:24px;height:24px}
+  .tabbar button.on{color:#4fe0d8}
+  main{max-width:680px;margin:0 auto;padding:12px 14px calc(92px + env(safe-area-inset-bottom))}
   .chips{display:flex;gap:8px;overflow-x:auto;padding:12px 0 6px;scrollbar-width:none}
   .chips::-webkit-scrollbar{display:none}
   .chip{white-space:nowrap;border:1px solid var(--line);background:var(--card);color:var(--ink);padding:7px 13px;border-radius:999px;font-size:14px}
-  .chip.on{background:var(--brand);color:#fff;border-color:var(--brand)}
+  .chip.on{background:linear-gradient(135deg,var(--brand),var(--brand2));color:#fff;border-color:transparent}
   .chip.fav.on{background:#f6b93b;border-color:#f6b93b;color:#3a2a00}
   .count{color:var(--muted);font-size:13px;margin:6px 2px 2px}
   .group-title{font-size:13px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.6px;margin:20px 2px 8px}
-  .card{background:var(--card);border-radius:16px;box-shadow:var(--shadow);padding:14px 14px 14px 16px;margin-bottom:10px;position:relative;overflow:hidden;border:1px solid var(--line)}
+  .card{background:var(--card);border-radius:20px;box-shadow:var(--shadow);padding:15px 15px 15px 17px;margin-bottom:10px;position:relative;overflow:hidden;border:1px solid var(--line)}
   .card::before{content:"";position:absolute;left:0;top:0;bottom:0;width:5px;background:var(--c,var(--brand2))}
   .card .top{display:flex;align-items:flex-start;gap:10px}
   .card .emoji{font-size:22px;flex-shrink:0}
@@ -108,6 +120,21 @@
   .rd-times{display:flex;gap:6px;flex-wrap:wrap;margin-top:7px}
   .rd-note{color:var(--muted);font-size:13px;margin-top:7px;line-height:1.45}
   .badge.bord{background:#e5535322;color:#c0392b}
+  /* Reise-Infos & Checkliste */
+  .ii{background:var(--card);border:1px solid var(--line);border-radius:18px;box-shadow:var(--shadow);padding:13px 15px;margin-bottom:9px}
+  .ii b{display:block;font-size:14.5px;margin-bottom:3px}
+  .ii p{margin:0;color:var(--muted);font-size:13.5px;line-height:1.55}
+  #muster{width:100%;border:2px solid var(--line);border-radius:12px;padding:11px 12px;font-size:16px;background:transparent;color:var(--ink);margin-top:8px}
+  #muster:focus{outline:none;border-color:var(--accent)}
+  .chk{display:flex;align-items:flex-start;gap:11px;background:var(--card);border:1px solid var(--line);border-radius:15px;padding:11px 13px;margin-bottom:7px;box-shadow:var(--shadow)}
+  .chk input{width:21px;height:21px;accent-color:var(--accent);margin-top:0;flex-shrink:0}
+  .chk span{font-size:14px;line-height:1.45}
+  .chk.done span{color:var(--muted);text-decoration:line-through}
+  /* Micro-Interaktionen */
+  .card,.crew,.chip,.tabbar button,.openplan,#addcab,.chk{transition:transform .12s ease}
+  .card:active,.crew:active,.chk:active{transform:scale(.985)}
+  .chip:active,.tabbar button:active,.openplan:active,#addcab:active{transform:scale(.93)}
+  @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
   .res-head{background:linear-gradient(160deg,var(--brand),var(--brand2));color:#fff;border-radius:16px;padding:16px;text-align:center;box-shadow:var(--shadow);margin-top:14px}
   .res-head .big{font-size:14px;opacity:.9}
   .res-head .deckbig{font-size:28px;font-weight:800;margin:4px 0}
@@ -165,27 +192,38 @@ window.onerror=function(m,src,line,col,err){
 <header>
   <div class="brand">
     <span class="logo">🛳️</span>
-    <div><h1>Mein Schiff Relax</h1><small>Bordguide · echter Deckplan</small></div>
+    <div><h1>Mein Schiff Relax</h1><small>Bordguide · Norwegen 14.–21. Okt 2026</small></div>
   </div>
   <div class="searchwrap">
     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0f2233" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4"/></svg>
     <input id="q" type="search" inputmode="search" placeholder="Restaurant, Bar, Pool, Deck …" autocomplete="off">
     <button id="clear">✕</button>
   </div>
-  <div class="seg">
-    <button data-view="kat" class="on">Lokale</button>
-    <button data-view="deck">Decks</button>
-    <button data-view="route">Route</button>
-    <button data-view="kabine">Kabine</button>
-    <button data-view="info">Info</button>
-  </div>
 </header>
 
 <main>
   <div id="chips" class="chips"></div>
   <div id="content"></div>
-  <footer>Inoffizieller Bordguide · Deckpläne aus der offiziellen TUI-Cruises-Broschüre<br>Angaben ohne Gewähr · Öffnungszeiten über die „Mein Schiff&ldquo;-App<br><b>Build 15</b></footer>
+  <footer>Inoffizieller Bordguide · Deckpläne aus der offiziellen TUI-Cruises-Broschüre<br>Angaben ohne Gewähr · Öffnungszeiten über die „Mein Schiff&ldquo;-App<br><b>Build 16</b></footer>
 </main>
+
+<nav class="tabbar">
+  <button data-view="kat" class="on" aria-label="Lokale">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2v7a2 2 0 0 0 2 2v11M10 2v7a2 2 0 0 1-2 2M8 2v4"/><path d="M17 2c-2 2.5-2 7 0 9v11M17 11c1.8-1.6 2.2-6.6 0-9"/></svg>
+    Lokale</button>
+  <button data-view="deck" aria-label="Decks">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 3 8l9 5 9-5-9-5Z"/><path d="m3 13 9 5 9-5"/></svg>
+    Decks</button>
+  <button data-view="route" aria-label="Route">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="m15.5 8.5-2.2 5-5 2.2 2.2-5 5-2.2Z"/></svg>
+    Route</button>
+  <button data-view="kabine" aria-label="Kabine">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 18v-7h13a5 5 0 0 1 5 5v2M3 5v13M3 14h18v4"/><circle cx="7" cy="10.5" r="1.6"/></svg>
+    Kabine</button>
+  <button data-view="info" aria-label="Info">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 11v5"/><path d="M12 7.8h.01"/></svg>
+    Info</button>
+</nav>
 
 <div class="lb" id="lb">
   <div class="lb-head">
@@ -367,6 +405,23 @@ if(!crew.length){
   const old=(lsGet("msr_cabin")||"").replace(/\D/g,''); if(old) crew[0].c=old;
 }
 const saveCrew = ()=>lsSet("msr_crew",JSON.stringify(crew));
+
+/* Checkliste (aus dem Reiseplan) – Häkchen bleiben am Gerät gespeichert */
+const CHECKLIST=[
+ "Personalausweis gültig (Norwegen: Perso reicht)",
+ "Reiserücktritts- & Auslandskranken-Versicherung / EHIC (Rückseite e-card)",
+ "Kreditkarte fürs Bordkonto",
+ "Online-Check-in Flug (ab 47 Std. vorher, lufthansa.com)",
+ "Meine-Reise-Portal: Schiffsmanifest / Online-Check-in erledigt",
+ "SPA-Anwendung für gratis Früh-Check-in gebucht (>35 €, Start vor 14:00)",
+ "KIELIUS-Bustickets ausgedruckt (eigener QR je Person)",
+ "Bordkarten & Reiseunterlagen ausgedruckt (ab 30.09. im Portal)",
+ "Warme, wetterfeste Kleidung & Regenjacke (Norwegen im Oktober!)",
+ "Medikamente, Ladekabel",
+ "Datenroaming an Bord ausschalten (Seefunk teuer, WLAN nutzen)",
+];
+let checks; try{checks=JSON.parse(lsGet("msr_check")||"{}")}catch(e){checks={};}
+let muster = lsGet("msr_muster")||"";
 const deckName = n => (DECKS.find(d=>d.n===n)||{}).name || "";
 const hasImg = n => !!DECK_IMG[String(n)];
 
@@ -515,19 +570,27 @@ function renderRoute(){
   return h;
 }
 function renderInfo(){
+  const done=CHECKLIST.filter((_,i)=>checks[i]).length;
+  const chk=CHECKLIST.map((c,i)=>`<label class="chk ${checks[i]?'done':''}"><input type="checkbox" data-chk="${i}" ${checks[i]?'checked':''}><span>${c}</span></label>`).join("");
   return `<div class="info">
-    <div class="note">📘 Die Deckpläne stammen aus der <strong>offiziellen TUI-Cruises-Broschüre</strong> der Mein Schiff Relax. Deine Kabinennummer steht direkt im Plan – die App markiert zusätzlich die richtige <strong>Seite</strong> (Backbord/Steuerbord) und die ungefähre Höhe (Bug↔Heck).</div>
-    <h2>📱 Auf den Home-Bildschirm legen</h2>
-    <ol><li>Diese Seite in <strong>Safari</strong> öffnen.</li>
-    <li>Unten auf das <strong>Teilen-Symbol</strong> tippen.</li>
-    <li><strong>„Zum Home-Bildschirm&ldquo;</strong> wählen.</li></ol>
-    <p>Läuft danach wie eine App – <strong>komplett offline</strong>, die Deckpläne sind eingebettet.</p>
-    <h2>🧭 So funktioniert der Kabinen-Finder</h2>
-    <p><strong>Erste Ziffer(n) = Deck</strong> (6123 → Deck 6, 10234 → Deck 10).</p>
-    <p><strong>Gerade Nummer = Steuerbord</strong> (rechts), <strong>ungerade = Backbord</strong> (links).</p>
-    <p>Niedrige Nummer = eher <strong>vorne (Bug)</strong>, hohe Nummer = eher <strong>hinten (Heck)</strong>.</p>
-    <h2>🆘 Gut zu wissen</h2>
-    <p>Deine <strong>Muster-Station</strong> (Sammelplatz für die Seenotübung) steht auf der Bordkarte & Kabinentür.</p>
+    <div class="group-title">⛑️ Meine Muster-Station</div>
+    <div class="ii"><p>Sammelplatz für die Seenotübung – steht auf Bordkarte &amp; Kabinentür. Am 1. Tag hier eintragen:</p>
+      <input id="muster" placeholder="z. B. Station B – Theater, Deck 4" maxlength="40" value="${esc(muster)}"></div>
+    <div class="group-title">✈️ Reise-Infos</div>
+    <div class="ii"><b>Anreise – Di 13.10.</b><p>05:00 Abfahrt Weerberg (2 Autos) · Flug LH2054 München → Hamburg 08:45–10:00 · KIELIUS-Bus 11:15 (UG Airport Plaza) → Kiel ZOB 12:49 · Hotel am Kieler Schloss, Dänische Str. 12–16 (Check-in ab 15:00, ☎ +49 431 5341620)</p></div>
+    <div class="ii"><b>Einschiffung – Mi 14.10.</b><p>Ostseekai (~10 Min. zu Fuß vom Hotel) · Früh-Check-in ab 09:00 (mit SPA-Buchung gratis) · Kabinen bezugsfertig ab ca. 15:00 (SMS)</p></div>
+    <div class="ii"><b>Rückreise – Mi 21.10.</b><p>Hamburg Cruise Center Steinwerder · Taxi/Uber ~40 Min. zum Flughafen (vorab Festpreis buchbar) · Flug LH2061 Hamburg → München 15:15–16:35 · Autos am P43 (Gratis-Shuttle 635)</p></div>
+    <div class="ii"><b>An Bord</b><p>Rezeption &amp; Bordhospital: Deck 3 (Welle) · All Inclusive inkl. Trinkgeld · immer nach <strong>Bordzeit</strong> richten</p></div>
+    <div class="note">🔒 Buchungscodes &amp; Ticketnummern stehen bewusst nicht in der App (öffentlicher Link) – die hat Stephan in den Reiseunterlagen.</div>
+    <div class="group-title">✅ Checkliste vor der Abreise · <span id="chkcount">${done}</span>/${CHECKLIST.length} erledigt</div>
+    ${chk}
+    <h2>📱 App installieren</h2>
+    <ol><li>Link in <strong>Safari</strong> öffnen</li>
+    <li><strong>Teilen-Symbol</strong> → <strong>„Zum Home-Bildschirm&ldquo;</strong></li>
+    <li>Einmal mit Internet öffnen – danach läuft alles <strong>komplett offline</strong></li></ol>
+    <h2>🧭 Kabinennummern-Logik</h2>
+    <p><strong>Erste Ziffer(n) = Deck</strong> · gerade Nummer = <strong>Steuerbord</strong> (rechts) · ungerade = <strong>Backbord</strong> (links) · niedrig = Bug, hoch = Heck.</p>
+    <div class="note">📘 Deckpläne aus der offiziellen TUI-Cruises-Broschüre · Angaben ohne Gewähr.</div>
   </div>`;
 }
 function render(){
@@ -676,9 +739,10 @@ document.getElementById("q").addEventListener("input",e=>{
   state.q=e.target.value; document.getElementById("clear").style.display=state.q?"block":"none"; render();
 });
 document.getElementById("clear").addEventListener("click",()=>{state.q="";document.getElementById("q").value="";document.getElementById("clear").style.display="none";render();});
-document.querySelectorAll(".seg button").forEach(b=>b.addEventListener("click",()=>{
-  document.querySelectorAll(".seg button").forEach(x=>x.classList.remove("on"));
+document.querySelectorAll(".tabbar button").forEach(b=>b.addEventListener("click",()=>{
+  document.querySelectorAll(".tabbar button").forEach(x=>x.classList.remove("on"));
   b.classList.add("on"); state.view=b.dataset.view; render();
+  window.scrollTo({top:0});
 }));
 document.getElementById("chips").addEventListener("click",e=>{
   const c=e.target.closest(".chip"); if(!c)return;
@@ -706,6 +770,21 @@ document.getElementById("content").addEventListener("click",e=>{
   const card=e.target.closest(".card");
   if(card){const deck=parseInt(card.dataset.deck,10); if(hasImg(deck)) openPlan(deck,{nr:card.dataset.nr||null,name:decodeURIComponent(card.dataset.name||'')});}
 });
+/* Checkliste & Muster-Station (Info-Tab) */
+document.getElementById("content").addEventListener("change",e=>{
+  const c=e.target.closest("[data-chk]");
+  if(c){
+    checks[c.dataset.chk]=c.checked;
+    lsSet("msr_check",JSON.stringify(checks));
+    c.closest(".chk").classList.toggle("done",c.checked);
+    const el=document.getElementById("chkcount");
+    if(el) el.textContent=CHECKLIST.filter((_,i)=>checks[i]).length;
+  }
+});
+document.getElementById("content").addEventListener("input",e=>{
+  if(e.target.id==="muster"){ muster=e.target.value; lsSet("msr_muster",muster); }
+});
+
 function bindCabin(){
   const inp=document.getElementById("cab"); if(!inp)return;
   inp.addEventListener("input",()=>{
