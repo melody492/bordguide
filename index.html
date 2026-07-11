@@ -23,6 +23,18 @@
       --shadow:0 1px 2px rgba(0,0,0,.3), 0 10px 30px rgba(0,0,0,.35);
       --glass:rgba(9,20,32,.92);}
   }
+  /* Manueller Umschalter (Info-Tab) überstimmt die System-Einstellung in beide Richtungen */
+  :root[data-theme="light"]{ --bg:#eef3f8; --card:#ffffff; --ink:#0b2033; --muted:#5a7184;
+    --line:#e2eaf2; --brand:#0b3554; --brand2:#136a8a; --accent:#0fb9b1;
+    --shadow:0 1px 2px rgba(9,30,50,.05), 0 10px 30px rgba(9,30,50,.08);
+    --glass:rgba(10,42,66,.88);}
+  :root[data-theme="dark"]{ --bg:#0b1724; --card:#12212f; --ink:#ecf3fa; --muted:#8fa6bc;
+    --line:#213850; --brand:#0fb9b1; --brand2:#3fb1d8; --accent:#0fb9b1;
+    --shadow:0 1px 2px rgba(0,0,0,.3), 0 10px 30px rgba(0,0,0,.35);
+    --glass:rgba(9,20,32,.92);}
+  .theme-seg{display:flex;gap:6px;background:var(--card);border:1px solid var(--line);border-radius:999px;padding:5px;box-shadow:var(--shadow)}
+  .theme-seg button{flex:1;border:0;background:transparent;color:var(--muted);padding:10px 4px;border-radius:999px;font-size:13.5px;font-weight:700}
+  .theme-seg button.on{background:linear-gradient(150deg,var(--brand),var(--brand2));color:#fff}
   *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
   html,body{margin:0}
   body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",Roboto,sans-serif;
@@ -213,7 +225,7 @@ window.onerror=function(m,src,line,col,err){
 <main>
   <div id="chips" class="chips"></div>
   <div id="content"></div>
-  <footer>Inoffizieller Bordguide · Deckpläne aus der offiziellen TUI-Cruises-Broschüre<br>Angaben ohne Gewähr · Öffnungszeiten über die „Mein Schiff&ldquo;-App<br><b>Build 17</b></footer>
+  <footer>Inoffizieller Bordguide · Deckpläne aus der offiziellen TUI-Cruises-Broschüre<br>Angaben ohne Gewähr · Öffnungszeiten über die „Mein Schiff&ldquo;-App<br><b>Build 18</b></footer>
 </main>
 
 <nav class="tabbar">
@@ -431,6 +443,13 @@ const CHECKLIST=[
 ];
 let checks; try{checks=JSON.parse(lsGet("msr_check")||"{}")}catch(e){checks={};}
 let muster = lsGet("msr_muster")||"";
+/* Darstellung: auto = System, sonst erzwungen hell/dunkel */
+let theme = lsGet("msr_theme")||"auto";
+function applyTheme(){
+  if(theme==="auto") document.documentElement.removeAttribute("data-theme");
+  else document.documentElement.setAttribute("data-theme",theme);
+}
+applyTheme();
 const deckName = n => (DECKS.find(d=>d.n===n)||{}).name || "";
 const hasImg = n => !!DECK_IMG[String(n)];
 
@@ -582,6 +601,12 @@ function renderInfo(){
   const done=CHECKLIST.filter((_,i)=>checks[i]).length;
   const chk=CHECKLIST.map((c,i)=>`<label class="chk ${checks[i]?'done':''}"><input type="checkbox" data-chk="${i}" ${checks[i]?'checked':''}><span>${c}</span></label>`).join("");
   return `<div class="info">
+    <div class="group-title">🎨 Darstellung</div>
+    <div class="theme-seg">
+      <button data-theme-set="auto" class="${theme==='auto'?'on':''}">Automatisch</button>
+      <button data-theme-set="light" class="${theme==='light'?'on':''}">Hell</button>
+      <button data-theme-set="dark" class="${theme==='dark'?'on':''}">Dunkel</button>
+    </div>
     <div class="group-title">⛑️ Meine Muster-Station</div>
     <div class="ii"><p>Sammelplatz für die Seenotübung – steht auf Bordkarte &amp; Kabinentür. Am 1. Tag hier eintragen:</p>
       <input id="muster" placeholder="z. B. Station B – Theater, Deck 4" maxlength="40" value="${esc(muster)}"></div>
@@ -776,6 +801,8 @@ document.getElementById("chips").addEventListener("click",e=>{
   else{state.cat=c.dataset.cat;state.favOnly=false;} render();
 });
 document.getElementById("content").addEventListener("click",e=>{
+  const th=e.target.closest("[data-theme-set]");
+  if(th){theme=th.dataset.themeSet; lsSet("msr_theme",theme); applyTheme(); render(); return;}
   const star=e.target.closest(".star");
   if(star){const name=decodeURIComponent(star.dataset.fav); favs.has(name)?favs.delete(name):favs.add(name); saveFavs(); render(); return;}
   const pb=e.target.closest("[data-openplan]");
