@@ -225,7 +225,7 @@ window.onerror=function(m,src,line,col,err){
 <main>
   <div id="chips" class="chips"></div>
   <div id="content"></div>
-  <footer>Inoffizieller Bordguide · Deckpläne aus der offiziellen TUI-Cruises-Broschüre<br>Angaben ohne Gewähr · Öffnungszeiten über die „Mein Schiff&ldquo;-App<br><b>Build 18</b></footer>
+  <footer>Inoffizieller Bordguide · Deckpläne aus der offiziellen TUI-Cruises-Broschüre<br>Angaben ohne Gewähr · Öffnungszeiten über die „Mein Schiff&ldquo;-App<br><b>Build 19</b></footer>
 </main>
 
 <nav class="tabbar">
@@ -412,12 +412,12 @@ const saveFavs = ()=>lsSet("msr_favs",JSON.stringify([...favs]));
 const esc = s=>String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 // Mitreisende: [{n:"Name", c:"Kabinennummer"}] – bleibt am Gerät gespeichert
 // „Die Kreuzfahrer" – Norwegen 14.–21.10.2026: 4 Paare / 4 Balkonkabinen.
-// Kabinennummern werden erst ab 30.09.2026 im „Meine Reise"-Portal zugeteilt → bis dahin „Nummer folgt".
+// Kabinennummern zugeteilt am 11.09.2026 (Buchung 123117, PUR/BAUR) – fest eingebaut.
 const DEFAULT_CREW=[
-  {n:"Stephan & Annelies", c:""},
-  {n:"Christian & Manuela", c:""},
-  {n:"Sieglinde & Hans-Peter", c:""},
-  {n:"Karl & Lotte", c:""},
+  {n:"Stephan & Annelies", c:"6019"},
+  {n:"Christian & Manuela", c:"15045"},
+  {n:"Sieglinde & Hans-Peter", c:"7167"},
+  {n:"Karl & Lotte", c:"7181"},
 ];
 let crew; try{crew=JSON.parse(lsGet("msr_crew")||"[]")}catch(e){crew=[];}
 if(!Array.isArray(crew)) crew=[];
@@ -426,6 +426,11 @@ if(!crew.length){
   const old=(lsGet("msr_cabin")||"").replace(/\D/g,''); if(old) crew[0].c=old;
 }
 const saveCrew = ()=>lsSet("msr_crew",JSON.stringify(crew));
+// Geräte mit bereits gespeicherter Liste: fest eingebaute Nummern in leere Einträge übernehmen
+{ let upd=false;
+  crew.forEach(p=>{ if(!p.c){ const d=DEFAULT_CREW.find(x=>x.n.toLowerCase()===p.n.toLowerCase()); if(d&&d.c){p.c=d.c; upd=true;} } });
+  if(upd) saveCrew();
+}
 
 /* Checkliste (aus dem Reiseplan) – Häkchen bleiben am Gerät gespeichert */
 const CHECKLIST=[
@@ -436,7 +441,7 @@ const CHECKLIST=[
  "Meine-Reise-Portal: Schiffsmanifest / Online-Check-in erledigt",
  "SPA-Anwendung für gratis Früh-Check-in gebucht (>35 €, Start vor 14:00)",
  "KIELIUS-Bustickets ausgedruckt (eigener QR je Person)",
- "Bordkarten & Reiseunterlagen ausgedruckt (ab 30.09. im Portal)",
+ "Bordkarten & Reiseunterlagen ausgedruckt (Meine-Reise-Portal)",
  "Warme, wetterfeste Kleidung & Regenjacke (Norwegen im Oktober!)",
  "Medikamente, Ladekabel",
  "Datenroaming an Bord ausschalten (Seefunk teuer, WLAN nutzen)",
@@ -555,7 +560,7 @@ function crewListHTML(){
     const loc=locateCabin(p.c);
     const info=loc
       ? `Kabine ${esc(p.c)} · Deck ${loc.deck} · ${deckName(loc.deck)} · ${loc.side==='backbord'?'◀ Backbord':'Steuerbord ▶'}`
-      : `Kabinennummer folgt (ab 30.09. im Portal) – antippen &amp; eintragen`;
+      : `Kabinennummer fehlt – antippen &amp; eintragen`;
     return `<div class="crew" data-crew="${i}">
       <span class="crew-ico">${loc?'🛏️':'🕐'}</span>
       <div class="crew-main"><b>${esc(p.n)}</b><span>${info}</span></div>
